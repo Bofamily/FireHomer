@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Homepage Settings</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 600px;
+      margin: 60px auto;
+      padding: 20px;
+      background: #f5f7fb;
+      color: #222;
+    }
+
+    input, button {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      font-size: 16px;
+    }
+
+    button {
+      cursor: pointer;
+      background: #0060df;
+      color: white;
+      border: 0;
+      border-radius: 6px;
+    }
+
+    #status {
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h1>My Custom Homepage</h1>
+  <p>Enter the website you want to open in every new tab.</p>
+
+  <form id="settings-form">
+    <label for="homepage">Website URL</label>
+    <input
+      id="homepage"
+      type="url"
+      placeholder="https://example.com"
+      required
+    >
+    <button type="submit">Save Homepage</button>
+  </form>
+
+  <p id="status" role="status"></p>
+
+  <script src="options.js"></script>
+</body>
+</html>

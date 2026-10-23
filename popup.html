@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Homepage</title>
+  <style>
+    body {
+      width: 320px;
+      padding: 18px;
+      margin: 0;
+      box-sizing: border-box;
+      font: 14px system-ui, sans-serif;
+      color: #202124;
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 20px;
+    }
+
+    p {
+      color: #5f6368;
+      line-height: 1.5;
+    }
+
+    label {
+      display: block;
+      margin: 16px 0 6px;
+      font-weight: 600;
+    }
+
+    input {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #aaa;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 12px;
+      padding: 10px;
+      border: 0;
+      border-radius: 6px;
+      background: #0060df;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0250bb;
+    }
+
+    #status {
+      min-height: 18px;
+      margin-bottom: 0;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <h2>My Homepage</h2>
+  <p>Choose the website to open whenever you create a new tab.</p>
+
+  <form id="homepage-form">
+    <label for="homepage">Homepage URL</label>
+    <input
+      id="homepage"
+      type="url"
+      placeholder="https://example.com"
+      required
+    >
+    <button type="submit">Save Homepage</button>
+  </form>
+
+  <p id="status" role="status" aria-live="polite"></p>
+
+  <script src="popup.js"></script>
+</body>
+</html>

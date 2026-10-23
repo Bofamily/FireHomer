@@ -1,0 +1,8 @@
+// Ignore devbuild and release builds
+// Ignore Gitignore
+// Ignore the .git directory
+
+.gitignore
+*.xpi
+web-ext-artifacts/
+.git/
