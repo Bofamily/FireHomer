@@ -4,6 +4,7 @@
   "version": "1.1",
   "description": "Choose your own website for every new tab.",
   "permissions": ["storage"],
+  "content_security_policy": "script-src 'self'; object-src 'self'; frame-src http: https:",
   "browser_action": {
     "default_title": "Change Homepage",
     "default_popup": "popup.html"

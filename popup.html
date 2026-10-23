@@ -39,6 +39,21 @@
       font-size: 14px;
     }
 
+    .setting {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+      font-weight: 400;
+    }
+
+    .setting input {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      padding: 0;
+    }
+
     button {
       width: 100%;
       margin-top: 12px;
@@ -75,6 +90,10 @@
       placeholder="https://example.com"
       required
     >
+    <label class="setting" for="embed-homepage">
+      <input id="embed-homepage" type="checkbox">
+      Embed homepage in new tabs
+    </label>
     <button type="submit">Save Homepage</button>
   </form>
 

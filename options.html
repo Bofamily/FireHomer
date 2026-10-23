@@ -21,6 +21,20 @@
       font-size: 16px;
     }
 
+    .setting {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .setting input {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      padding: 0;
+    }
+
     button {
       cursor: pointer;
       background: #0060df;
@@ -46,6 +60,10 @@
       placeholder="https://example.com"
       required
     >
+    <label class="setting" for="embed-homepage">
+      <input id="embed-homepage" type="checkbox">
+      Embed homepage in new tabs
+    </label>
     <button type="submit">Save Homepage</button>
   </form>
 

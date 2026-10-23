@@ -1,6 +1,6 @@
 const DEFAULT_HOMEPAGE = "https://www.google.com";
 
-browser.storage.local.get("homepage").then((data) => {
+browser.storage.local.get(["homepage", "embedHomepage"]).then((data) => {
   const homepage = data.homepage || DEFAULT_HOMEPAGE;
 
   try {
@@ -11,7 +11,14 @@ browser.storage.local.get("homepage").then((data) => {
       throw new Error("Invalid URL protocol");
     }
 
-    window.location.replace(url.href);
+    if (data.embedHomepage === false) {
+      window.location.replace(url.href);
+      return;
+    }
+
+    const frame = document.getElementById("homepage");
+    frame.src = url.href;
+    frame.hidden = false;
   } catch {
     window.location.replace(DEFAULT_HOMEPAGE);
   }

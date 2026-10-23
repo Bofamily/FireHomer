@@ -1,10 +1,12 @@
 const input = document.getElementById("homepage");
+const embedHomepage = document.getElementById("embed-homepage");
 const form = document.getElementById("homepage-form");
 const status = document.getElementById("status");
 
 async function loadHomepage() {
-  const data = await browser.storage.local.get("homepage");
+  const data = await browser.storage.local.get(["homepage", "embedHomepage"]);
   input.value = data.homepage || "https://www.google.com";
+  embedHomepage.checked = data.embedHomepage !== false;
 }
 
 form.addEventListener("submit", async (event) => {
@@ -19,7 +21,8 @@ form.addEventListener("submit", async (event) => {
     }
 
     await browser.storage.local.set({
-      homepage: url.href
+      homepage: url.href,
+      embedHomepage: embedHomepage.checked
     });
 
     input.value = url.href;

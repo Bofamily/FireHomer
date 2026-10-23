@@ -1,9 +1,11 @@
 const input = document.getElementById("homepage");
+const embedHomepage = document.getElementById("embed-homepage");
 const form = document.getElementById("settings-form");
 const status = document.getElementById("status");
 
-browser.storage.local.get("homepage").then((data) => {
+browser.storage.local.get(["homepage", "embedHomepage"]).then((data) => {
   input.value = data.homepage || "https://www.google.com";
+  embedHomepage.checked = data.embedHomepage !== false;
 });
 
 form.addEventListener("submit", async (event) => {
@@ -18,7 +20,8 @@ form.addEventListener("submit", async (event) => {
     }
 
     await browser.storage.local.set({
-      homepage: url.href
+      homepage: url.href,
+      embedHomepage: embedHomepage.checked
     });
 
     status.textContent = "Homepage saved successfully!";
