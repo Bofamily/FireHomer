@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "FireHomer",
-  "version": "1.1",
+  "version": "2.4",
   "description": "Choose your own website for every new tab.",
   "permissions": ["storage"],
   "content_security_policy": "script-src 'self'; object-src 'self'; frame-src http: https:",
