@@ -15,8 +15,7 @@
     "default_popup": "popup.html"
   },
   "chrome_url_overrides": {
-    "newtab": "newtab.html",
-    "home": "newtab.html"
+    "newtab": "newtab.html"
   },
   "background": {
     "scripts": ["background.js"]
