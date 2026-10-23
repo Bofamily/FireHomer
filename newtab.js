@@ -12,9 +12,11 @@ browser.storage.local.get(["homepage", "embedHomepage"]).then((data) => {
       throw new Error("Invalid URL protocol");
     }
 
-    openHomepage.href = url.href;
+    if (openHomepage) {
+      openHomepage.href = url.href;
+    }
 
-    if (data.embedHomepage === false) {
+    if (data.embedHomepage !== true) {
       window.location.replace(url.href);
       return;
     }
@@ -23,7 +25,7 @@ browser.storage.local.get(["homepage", "embedHomepage"]).then((data) => {
     frame.src = url.href;
     frame.hidden = false;
   } catch {
-    if (data.embedHomepage === false) {
+    if (data.embedHomepage !== true) {
       window.location.replace(DEFAULT_HOMEPAGE);
       return;
     }
