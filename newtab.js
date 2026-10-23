@@ -20,6 +20,13 @@ browser.storage.local.get(["homepage", "embedHomepage"]).then((data) => {
     frame.src = url.href;
     frame.hidden = false;
   } catch {
-    window.location.replace(DEFAULT_HOMEPAGE);
+    if (data.embedHomepage === false) {
+      window.location.replace(DEFAULT_HOMEPAGE);
+      return;
+    }
+
+    const frame = document.getElementById("homepage");
+    frame.src = DEFAULT_HOMEPAGE;
+    frame.hidden = false;
   }
 });
