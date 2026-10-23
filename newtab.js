@@ -2,6 +2,7 @@ const DEFAULT_HOMEPAGE = "https://www.google.com";
 
 browser.storage.local.get(["homepage", "embedHomepage"]).then((data) => {
   const homepage = data.homepage || DEFAULT_HOMEPAGE;
+  const openHomepage = document.getElementById("open-homepage");
 
   try {
     const url = new URL(homepage);
@@ -10,6 +11,8 @@ browser.storage.local.get(["homepage", "embedHomepage"]).then((data) => {
         url.protocol !== "http:") {
       throw new Error("Invalid URL protocol");
     }
+
+    openHomepage.href = url.href;
 
     if (data.embedHomepage === false) {
       window.location.replace(url.href);
