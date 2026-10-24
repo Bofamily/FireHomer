@@ -3,17 +3,22 @@ name: Node.js CI
 on:
   push:
     branches: [ "main" ]
+    tags:
+      - 'v*' # Triggers the workflow when a version tag is pushed (e.g., v1.0.0-alpha)
   pull_request:
     branches: [ "main" ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
         node-version: [24.22.1]
+
+    # Required permissions to write a release and upload assets
+    permissions:
+      contents: write
 
     steps:
     - uses: actions/checkout@v4
@@ -34,3 +39,15 @@ jobs:
       with:
         name: web-extension-zip
         path: web-ext-artifacts/
+
+    # This step only runs when a version tag starting with 'v' is pushed
+    - name: Create GitHub Pre-Release
+      if: startsWith(github.ref, 'refs/tags/v')
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh release create ${{ github.ref_name }} \
+          web-ext-artifacts/*.zip \
+          --title "Pre-release ${{ github.ref_name }}" \
+          --notes "Automated pre-release build for extension version ${{ github.ref_name }}." \
+          --prerelease
