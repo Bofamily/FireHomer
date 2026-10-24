@@ -3,8 +3,6 @@ name: Node.js CI
 on:
   push:
     branches: [ "main" ]
-    tags:
-      - 'v*' # Triggers the workflow when a version tag is pushed (e.g., v1.0.0-alpha)
   pull_request:
     branches: [ "main" ]
 
@@ -16,13 +14,14 @@ jobs:
       matrix:
         node-version: [24.22.1]
 
-    # Required permissions to write a release and upload assets
     permissions:
       contents: write
 
     steps:
     - uses: actions/checkout@v4
-    
+      with:
+        fetch-depth: 0
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
@@ -30,7 +29,33 @@ jobs:
         cache: 'npm'
         
     - run: npm install --save-dev web-ext
-    
+
+    # 1. Automatically calculate, create, and push the Git tag first
+    - name: Bump Version and Push Git Tag
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      id: create_tag
+      uses: anothrNick/github-tag-action@1.64.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        WITH_V: true
+        DEFAULT_BUMP: patch
+
+    # 2. Extract tag, clean the 'v', and write it into your manifest file
+    - name: Sync Version to manifest.json
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: |
+        # Fetch the new tag string (e.g., v1.0.5)
+        RAW_TAG="${{ steps.create_tag.outputs.new_tag }}"
+        
+        # Strip the leading 'v' to make it compatible with web extensions (e.g., 1.0.5)
+        CLEAN_VERSION="${RAW_TAG#v}"
+        
+        echo "Updating manifest.json version to: $CLEAN_VERSION"
+        
+        # Modify manifest.json in-place using jq
+        jq ".version = \"$CLEAN_VERSION\"" manifest.json > temp.json && mv temp.json manifest.json
+
+    # 3. Build the zip (it will now bundle the updated manifest.json)
     - name: Build Extension Zip
       run: npx web-ext build --overwrite-dest
       
@@ -40,14 +65,15 @@ jobs:
         name: web-extension-zip
         path: web-ext-artifacts/
 
-    # This step only runs when a version tag starting with 'v' is pushed
+    # 4. Create the pre-release and attach the newly bundled zip file
     - name: Create GitHub Pre-Release
-      if: startsWith(github.ref, 'refs/tags/v')
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NEW_TAG: ${{ steps.create_tag.outputs.new_tag }}
       run: |
-        gh release create ${{ github.ref_name }} \
+        gh release create "$NEW_TAG" \
           web-ext-artifacts/*.zip \
-          --title "Pre-release ${{ github.ref_name }}" \
-          --notes "Automated pre-release build for extension version ${{ github.ref_name }}." \
+          --title "Pre-release $NEW_TAG" \
+          --notes "Automated pre-release build generated from commit ${{ github.sha }}. Manifest version synced to ${NEW_TAG#v}." \
           --prerelease
