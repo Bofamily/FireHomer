@@ -16,7 +16,7 @@ browser.storage.local.get(["homepage", "embedHomepage"]).then((data) => {
       openHomepage.href = url.href;
     }
 
-    if (data.embedHomepage !== true) {
+    if (data.embedHomepage === false) {
       window.location.replace(url.href);
       return;
     }
@@ -25,7 +25,7 @@ browser.storage.local.get(["homepage", "embedHomepage"]).then((data) => {
     frame.src = url.href;
     frame.hidden = false;
   } catch {
-    if (data.embedHomepage !== true) {
+    if (data.embedHomepage === false) {
       window.location.replace(DEFAULT_HOMEPAGE);
       return;
     }

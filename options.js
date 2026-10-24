@@ -5,7 +5,7 @@ const status = document.getElementById("status");
 
 browser.storage.local.get(["homepage", "embedHomepage"]).then((data) => {
   input.value = data.homepage || "https://www.google.com";
-  embedHomepage.checked = data.embedHomepage === true;
+  embedHomepage.checked = data.embedHomepage !== false;
 });
 
 form.addEventListener("submit", async (event) => {
