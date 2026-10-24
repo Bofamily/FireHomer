@@ -26,4 +26,5 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - run: npm install --save-dev web-ext
     - run: npx web-ext build --overwrite-dest
