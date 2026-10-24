@@ -1,7 +1,3 @@
-<head>
-<script async defer src="https://buttons.github.io/buttons.js"></script>
-</head>
-
 # FireHomer
 FireHomer allows you to set your homepage in Firefox
 
